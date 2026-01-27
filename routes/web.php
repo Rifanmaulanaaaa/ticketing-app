@@ -28,6 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//login
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->middleware('guest')
+    ->name('login');
+
 //paymenttype
 Route::middleware(['auth'])
     ->prefix('admin')
@@ -56,7 +61,18 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::resource('payment-types', PaymentTypeController::class);
     });
+//logout
+Route::middleware('auth')->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('orders.index');
 
+    Route::post('/logout', function () {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect('/login');
+    })->name('logout');
+});
 });
 
 require __DIR__ . '/auth.php';
