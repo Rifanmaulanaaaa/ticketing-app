@@ -15,10 +15,7 @@
       <div class="lg:col-span-2">
         <div class="card bg-base-100 shadow">
           <figure>
-            <img src="{{ $event->gambar
-      ? asset('storage/' . $event->gambar)
-      : 'https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp'
-  }}" alt="{{ $event->judul }}" class="w-full h-96 object-cover" />
+            <img src="{{ $event->gambar ? asset('images/events/' . $event->gambar) : 'https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp' }}" alt="{{ $event->judul }}" class="w-full h-96 object-cover" />
           </figure>
           <div class="card-body">
             <div class="flex justify-between items-start gap-4">
@@ -26,7 +23,7 @@
                 <h1 class="text-3xl font-extrabold">{{ $event->judul }}</h1>
                 <p class="text-sm text-gray-500 mt-1">
                   {{ \Carbon\Carbon::parse($event->tanggal_waktu)->locale('id')->translatedFormat('d F Y, H:i') }} • 📍
-                  {{ $event->lokasi }}
+                  {{ $event->lokasi?->nama_lokasi ?? 'Lokasi tidak ditentukan' }}
                 </p>
 
                 <div class="mt-3 flex gap-2 items-center">
@@ -132,8 +129,7 @@
 
   </section>
 
-  <script>
-(function () {
+
   // ======================
   // Helper
   // ======================
@@ -143,16 +139,7 @@
   // ======================
   // Tickets data
   // ======================
-  const tickets = {
-    @foreach($event->tikets as $tiket)
-      {{ $tiket->id }}: {
-        id: {{ $tiket->id }},
-        price: {{ $tiket->harga ?? 0 }},
-        stock: {{ $tiket->stok }},
-        tipe: "{{ e($tiket->tipe) }}"
-      },
-    @endforeach
-  };
+  const tickets = {!! json_encode($ticketsData) !!};
 
   // ======================
   // Elements

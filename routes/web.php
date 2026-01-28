@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\HistoriesController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Admin\PaymentTypeController;
+use App\Http\Controllers\Admin\LokasiController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -27,11 +29,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-//login
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-    ->middleware('guest')
-    ->name('login');
 
 //paymenttype
 Route::middleware(['auth'])
@@ -52,6 +49,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     // Tiket Management 
     Route::resource('tickets', TiketController::class);
+
+    // Lokasi Management
+    Route::resource('lokasi', LokasiController::class);
 
     // Histories
     Route::get('/histories', [HistoriesController::class, 'index'])->name('histories.index');

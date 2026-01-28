@@ -60,17 +60,22 @@
                             required />
                     </div>
 
-                    <!-- Lokasi -->
+                    <!-- Lokasi (Dropdown) -->
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Lokasi</span>
+                            <span class="label-text font-semibold">Lokasi <span class="text-red-500">*</span></span>
                         </label>
-                        <input
-                            type="text"
-                            name="lokasi"
-                            placeholder="Contoh: Stadion Utama"
-                            class="input input-bordered w-full"
-                            required />
+                        <select name="lokasi_id" class="select select-bordered w-full @error('lokasi_id') select-error @enderror" required>
+                            <option value="" disabled selected>Pilih Lokasi</option>
+                            @foreach ($lokasis as $lokasi)
+                            <option value="{{ $lokasi->id }}" {{ old('lokasi_id') == $lokasi->id ? 'selected' : '' }}>{{ $lokasi->nama_lokasi }}</option>
+                            @endforeach
+                        </select>
+                        @error('lokasi_id')
+                            <label class="label">
+                                <span class="label-text-alt text-red-500">{{ $message }}</span>
+                            </label>
+                        @enderror
                     </div>
 
                     <!-- Kategori -->
@@ -81,7 +86,7 @@
                         <select name="kategori_id" class="select select-bordered w-full" required>
                             <option value="" disabled selected>Pilih Kategori</option>
                             @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->nama }}</option>
+                            <option value="{{ $category->id }}" {{ old('kategori_id') == $category->id ? 'selected' : '' }}>{{ $category->nama }}</option>
                             @endforeach
                         </select>
                     </div>

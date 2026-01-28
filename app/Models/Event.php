@@ -14,9 +14,9 @@ class Event extends Model
         'judul',
         'deskripsi',
         'tanggal_waktu',
-        'lokasi',
         'kategori_id',
         'gambar',
+        'lokasi_id',
     ];
 
     protected $casts = [
@@ -36,5 +36,10 @@ class Event extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function lokasi()
+    {
+        return $this->belongsTo(Lokasi::class);
     }
 }
